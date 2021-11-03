@@ -3,6 +3,8 @@ Mydb is client library to abstracts access to master-slave physical Sql server.
 
 Inspired by [nap (MIT License)](https://github.com/tsenart/nap) and [mssqlx (MIT License)](https://github.com/linxGnu/mssqlx)
 
+[![test status](https://github.com/m-rec/6685f2732193a4a5a150add9369734dbf0f260c9/workflows/test/badge.svg?branch=master "test status")](https://github.com/m-rec/6685f2732193a4a5a150add9369734dbf0f260c9/actions)
+
 ## Overview
 - manage mysql master slave access
 - slave traffic balancing
