@@ -118,3 +118,47 @@ func TestRandom(t *testing.T) {
 		}
 	})
 }
+
+func TestReplace(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		db0, _, err := sqlmock.New()
+		if err != nil {
+			t.Error(err.Error())
+		}
+		db1, _, err := sqlmock.New()
+		if err != nil {
+			t.Error(err.Error())
+		}
+		d := make([]*sql.DB, 0)
+		d = append(d, db0)
+		d = append(d, db1)
+		dbs := NewDbList()
+		dbs.Replace(d)
+
+		if len(dbs.list) != 2 {
+			t.Error("dbList Replace() want 2 db")
+		}
+	})
+
+	t.Run("success with replace same db", func(t *testing.T) {
+		db0, _, err := sqlmock.New()
+		if err != nil {
+			t.Error(err.Error())
+		}
+		db1, _, err := sqlmock.New()
+		if err != nil {
+			t.Error(err.Error())
+		}
+		d := make([]*sql.DB, 0)
+		d = append(d, db0)
+		d = append(d, db1)
+		dbs := dbList{
+			list: d,
+		}
+		dbs.Replace(d)
+
+		if len(dbs.list) != 2 {
+			t.Error("dbList Replace() want 2 db")
+		}
+	})
+}

@@ -70,8 +70,12 @@ func (d *dbList) Random() (res *sql.DB) {
 }
 
 func (d *dbList) isSame(dbs []*sql.DB) bool {
+	if len(d.list) != len(dbs) {
+		return false
+	}
+
 	// OPTIMIZE: reflect.DeepEqual is slow?? want get bench.
-	return reflect.DeepEqual(d.list[0:len(d.list)], dbs)
+	return reflect.DeepEqual(d.list, dbs)
 }
 
 func (d *dbList) Replace(dbs []*sql.DB) {

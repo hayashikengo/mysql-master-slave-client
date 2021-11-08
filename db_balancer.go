@@ -12,6 +12,8 @@ var _ interface {
 	Destroy()
 	GetHealthCheckIntervalMilli() int
 	SetHealthCheckIntervalMilli(i int)
+	GetBalaceAlgorithm() BalaceAlgorithm
+	SetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm)
 } = NewDbBalancer(context.Background(), []*sql.DB{})
 
 type BalaceAlgorithm int
@@ -53,7 +55,7 @@ func NewDbBalancer(ctx context.Context, dbs []*sql.DB) *dbBalancer {
 }
 
 func (d *dbBalancer) healthCheck() {
-	availableDbs := make([]*sql.DB, len(d.dbs))
+	availableDbs := make([]*sql.DB, 0)
 	for i := range d.dbs {
 		db := d.dbs[i]
 		if db.Ping() == nil {
@@ -77,7 +79,7 @@ func (d *dbBalancer) healthCheckWorker() {
 }
 
 func (d *dbBalancer) IsAlive() bool {
-	return d.availableDbs.IsEmpty()
+	return !d.availableDbs.IsEmpty()
 }
 
 func (d *dbBalancer) Get() *sql.DB {

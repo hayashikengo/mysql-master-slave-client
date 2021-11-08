@@ -13,7 +13,7 @@
     - [x] Dev tool
     - [x] License
 - testが無い
-  - [ ] test追加
+  - [x] test追加
   - [x] 実行時は、-raceオプションつける
 - ヘルスチェックされていない
   - [x] ヘルスチェック実装

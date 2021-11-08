@@ -84,7 +84,11 @@ func (db *DB) getReadReplica() (*sql.DB, error) {
 		// Fallback. Use master for read, if all replica died
 		switch db.fallbackType {
 		case UseMaster:
-			return db.master, nil
+			if db.masterHealth == nil {
+				return db.master, nil
+			} else {
+				return nil, ErrMasterDied
+			}
 		default:
 			return nil, ErrAllReadreplicaDied
 		}
@@ -114,7 +118,6 @@ func (db *DB) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return d.Query(query, args...)
 }
 
@@ -212,23 +215,23 @@ func (db *DB) PrepareContext(ctx context.Context, query string) (*sql.Stmt, erro
 }
 
 func (db *DB) SetConnMaxLifetime(d time.Duration) {
-	db.master.SetConnMaxLifetime(d)
-	for i := range db.readreplicas {
-		db.readreplicas[i].SetConnMaxLifetime(d)
+	allDbList := db.allDbList()
+	for i := range allDbList {
+		allDbList[i].SetConnMaxLifetime(d)
 	}
 }
 
 func (db *DB) SetMaxIdleConns(n int) {
-	db.master.SetMaxIdleConns(n)
-	for i := range db.readreplicas {
-		db.readreplicas[i].SetMaxIdleConns(n)
+	allDbList := db.allDbList()
+	for i := range allDbList {
+		allDbList[i].SetMaxIdleConns(n)
 	}
 }
 
 func (db *DB) SetMaxOpenConns(n int) {
-	db.master.SetMaxOpenConns(n)
-	for i := range db.readreplicas {
-		db.readreplicas[i].SetMaxOpenConns(n)
+	allDbList := db.allDbList()
+	for i := range allDbList {
+		allDbList[i].SetMaxOpenConns(n)
 	}
 }
 
@@ -240,10 +243,18 @@ func (db *DB) SetHealthCheckIntervalMilli(i int) {
 	db.readDbBalancer.SetHealthCheckIntervalMilli(i)
 }
 
-func (db *DB) GetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm) BalaceAlgorithm {
+func (db *DB) GetBalaceAlgorithm() BalaceAlgorithm {
 	return db.readDbBalancer.GetBalaceAlgorithm()
 }
 
 func (db *DB) SetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm) {
 	db.readDbBalancer.SetBalaceAlgorithm(balaceAlgorithm)
+}
+
+func (db *DB) GetFallbackType() FallbackType {
+	return db.fallbackType
+}
+
+func (db *DB) SetFallbackType(fallbackType FallbackType) {
+	db.fallbackType = fallbackType
 }
