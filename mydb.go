@@ -3,7 +3,6 @@ package mydb
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"time"
 )
 
@@ -83,7 +82,6 @@ func (db *DB) getReadReplica() (*sql.DB, error) {
 		return db.readDbBalancer.Get(), nil
 	} else {
 		// Fallback. Use master for read, if all replica died
-		fmt.Println("okokok")
 		switch db.fallbackType {
 		case UseMaster:
 			if db.masterHealth == nil {
