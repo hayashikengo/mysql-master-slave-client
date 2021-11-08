@@ -30,7 +30,9 @@
 - ライブラリを使った場合のオーバーヘッドを知りたい
   - [ ] `mydb vs database/sql` のbenchmark追加
 - ci欲しい
-  - [x] PRが出たら、testが回るようにする
+  - [x] `go build` 回す
+  - [x] `go test` 回す
+  - [x] `reviewdog` 入れたい
 - 開発環境ほしい
   - [x] docker-compose 入れる
 
