@@ -13,7 +13,7 @@
     - [x] Dev tool
     - [x] License
 - testが無い
-  - [ ] test追加
+  - [x] test追加
   - [x] 実行時は、-raceオプションつける
 - ヘルスチェックされていない
   - [x] ヘルスチェック実装
@@ -30,7 +30,7 @@
 - ライブラリを使った場合のオーバーヘッドを知りたい
   - [ ] `mydb vs database/sql` のbenchmark追加
 - ci欲しい
-  - [ ] PRが出たら、testが回るようにする
+  - [x] PRが出たら、testが回るようにする
 - 開発環境ほしい
   - [x] docker-compose 入れる
 

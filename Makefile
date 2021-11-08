@@ -1,7 +1,10 @@
 test-all:
-	go test -race
+	go test -race -cover
 build: test
 	go build -race
+open-coverage:
+	go test -race -coverprofile=cover.out && \
+	go tool cover -html=cover.out
 docker-db-crean:
 	rm -rf ./examples/master/data/*
 	rm -rf ./examples/slave/data/*
