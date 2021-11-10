@@ -21,6 +21,18 @@ do
     sleep 4
 done
 
+until docker-compose exec mysql_slave1 sh -c 'export MYSQL_PWD=111; mysql -u root -e ";"'
+do
+    echo "Waiting for mysql_slave1 database connection..."
+    sleep 4
+done
+
+until docker-compose exec mysql_slave2 sh -c 'export MYSQL_PWD=111; mysql -u root -e ";"'
+do
+    echo "Waiting for mysql_slave2 database connection..."
+    sleep 4
+done
+
 docker-ip() {
     docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
 }
@@ -35,5 +47,9 @@ start_slave_cmd+="$start_slave_stmt"
 start_slave_cmd+='"'
 echo $start_slave_cmd
 docker exec mysql_slave sh -c "$start_slave_cmd"
+docker exec mysql_slave1 sh -c "$start_slave_cmd"
+docker exec mysql_slave2 sh -c "$start_slave_cmd"
 
 docker exec mysql_slave sh -c "export MYSQL_PWD=111; mysql -u root -e 'SHOW SLAVE STATUS \G'"
+docker exec mysql_slave1 sh -c "export MYSQL_PWD=111; mysql -u root -e 'SHOW SLAVE STATUS \G'"
+docker exec mysql_slave2 sh -c "export MYSQL_PWD=111; mysql -u root -e 'SHOW SLAVE STATUS \G'"

@@ -75,6 +75,7 @@ func (d *dbList) isSame(dbs []*sql.DB) bool {
 	}
 
 	// OPTIMIZE: reflect.DeepEqual is slow?? want get bench.
+	// Not critical, Because this method called by only health check.
 	return reflect.DeepEqual(d.list, dbs)
 }
 
