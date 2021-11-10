@@ -90,19 +90,12 @@ db.SetFallbackType(mydb.UseMaster) // default UseMaster
 db.SetHealthCheckIntervalMilli(1000) // default 5000
 ```
 
-#### db connection configuration
+#### DB connection configuration
 ```go
-	db.SetConnMaxLifetime(10)
-	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(10)
+db.SetConnMaxLifetime(10)
+db.SetMaxIdleConns(10)
+db.SetMaxOpenConns(10)
 ```
-
-- `None`
-  - return `ErrAllReadreplicaDied` if all readreplica died
-- `UseMaster`
-  - use Master if all readreplica died
-  - return `ErrMasterDied` if all readreplica and master died
-
 
 ## Benchmark
 ```
@@ -132,9 +125,7 @@ $ make test-all
 $ make build
 ```
 
-### Run master slave db
-Run master db and 3 readreplica dbs.
-
+### Run master and 3 readreplica dbs by docker-compose
 ```bash
 # initialize db setting on the first time
 $ make docker-master-slave-db-initialize
@@ -142,8 +133,7 @@ $ make docker-master-slave-db-initialize
 # run master slave db
 $ make docker-master-slave-db-run
 ```
-### Benchmark
-mydb vs database/sql
+### Benchmark (mydb vs database/sql)
 ```bash
 # run with sqlmock
 $ make bench-with-sqlmock
