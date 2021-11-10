@@ -25,8 +25,32 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// new mydb instance
 	db := mydb.New(master, slave1, slave2)
 
+	// close db connections
+	defer db.Close()
+
+	// setting
+	db.SetFallbackType(mydb.UseMaster)
+	db.SetBalanceAlgorithm(mydb.Random)
+	db.SetHealthCheckIntervalMilli(1000)
+	db.SetConnMaxLifetime(10)
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(10)
+
+	// exec by master
+	result, err := db.Exec("insert into code values (100), (200)")
+	if err != nil {
+		fmt.Println(err)
+	}
+	_, err = result.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// query by readreplica
 	rows, err := db.Query("select * from code")
 	if err != nil {
 		fmt.Println(err)
@@ -36,6 +60,4 @@ func main() {
 		rows.Scan(&c.Code)
 		fmt.Println(c)
 	}
-
-	db.Close()
 }
