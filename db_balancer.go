@@ -12,14 +12,14 @@ var _ interface {
 	Destroy()
 	GetHealthCheckIntervalMilli() int
 	SetHealthCheckIntervalMilli(i int)
-	GetBalaceAlgorithm() BalaceAlgorithm
-	SetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm)
+	GetBalanceAlgorithm() BalanceAlgorithm
+	SetBalanceAlgorithm(balanceAlgorithm BalanceAlgorithm)
 } = NewDbBalancer(context.Background(), []*sql.DB{})
 
-type BalaceAlgorithm int
+type BalanceAlgorithm int
 
 const (
-	RoundRobin BalaceAlgorithm = iota
+	RoundRobin BalanceAlgorithm = iota
 	Random
 )
 
@@ -30,7 +30,7 @@ type dbBalancer struct {
 	availableDbs             *dbList
 	isMulti                  bool
 	healthCheckIntervalMilli int
-	balaceAlgorithm          BalaceAlgorithm
+	balanceAlgorithm         BalanceAlgorithm
 }
 
 func NewDbBalancer(ctx context.Context, dbs []*sql.DB) *dbBalancer {
@@ -39,7 +39,7 @@ func NewDbBalancer(ctx context.Context, dbs []*sql.DB) *dbBalancer {
 		availableDbs:             NewDbList(),
 		isMulti:                  len(dbs) > 1,
 		healthCheckIntervalMilli: DefaultHealthCheckIntervalMilli,
-		balaceAlgorithm:          DefaultBalaceAlgorithm,
+		balanceAlgorithm:         DefaultBalanceAlgorithm,
 	}
 
 	// setup context
@@ -89,7 +89,7 @@ func (d *dbBalancer) Get() *sql.DB {
 		return nil
 	}
 
-	switch d.balaceAlgorithm {
+	switch d.balanceAlgorithm {
 	case RoundRobin:
 		return d.availableDbs.Next()
 	case Random:
@@ -111,10 +111,10 @@ func (d *dbBalancer) SetHealthCheckIntervalMilli(i int) {
 	d.healthCheckIntervalMilli = i
 }
 
-func (d *dbBalancer) GetBalaceAlgorithm() BalaceAlgorithm {
-	return d.balaceAlgorithm
+func (d *dbBalancer) GetBalanceAlgorithm() BalanceAlgorithm {
+	return d.balanceAlgorithm
 }
 
-func (d *dbBalancer) SetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm) {
-	d.balaceAlgorithm = balaceAlgorithm
+func (d *dbBalancer) SetBalanceAlgorithm(balanceAlgorithm BalanceAlgorithm) {
+	d.balanceAlgorithm = balanceAlgorithm
 }

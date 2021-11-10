@@ -49,7 +49,7 @@ func BenchmarkMydbSelectRandom(b *testing.B) {
 		fmt.Println(err)
 	}
 	db := mydb.New(master, slave, slave1, slave2)
-	db.SetBalaceAlgorithm(mydb.Random)
+	db.SetBalanceAlgorithm(mydb.Random)
 	db.SetMaxOpenConns(100)
 	db.SetMaxIdleConns(100)
 	db.SetConnMaxLifetime(5 * time.Minute)
@@ -85,7 +85,7 @@ func BenchmarkMydbSelectRoundrobin(b *testing.B) {
 		fmt.Println(err)
 	}
 	db := mydb.New(master, slave, slave1, slave2)
-	db.SetBalaceAlgorithm(mydb.RoundRobin)
+	db.SetBalanceAlgorithm(mydb.RoundRobin)
 	db.SetMaxOpenConns(100)
 	db.SetMaxIdleConns(100)
 	db.SetConnMaxLifetime(5 * time.Minute)
