@@ -15,10 +15,23 @@ docker-master-slave-db-initialize:
 	cd ./examples && \
 	bash ./build.sh && \
 	docker exec mysql_master sh -c "export MYSQL_PWD=111; mysql -u root mydb -e 'create table code(code int); insert into code values (100), (200)'" && \
-	docker exec mysql_slave sh -c "export MYSQL_PWD=111; mysql -u root mydb -e 'select * from code \G'"	
+	docker exec mysql_slave sh -c "export MYSQL_PWD=111; mysql -u root mydb -e 'select * from code \G'"	&& \
+	docker exec mysql_slave1 sh -c "export MYSQL_PWD=111; mysql -u root mydb -e 'select * from code \G'" && \
+	docker exec mysql_slave2 sh -c "export MYSQL_PWD=111; mysql -u root mydb -e 'select * from code \G'"
 docker-mysql-login-master:
 	cd ./examples && \
 	docker exec -it mysql_master mysql -u root -p111 mydb
 docker-mysql-login-slave:
 	cd ./examples && \
 	docker exec -it mysql_slave mysql -u root -p111 mydb
+docker-mysql-login-slave1:
+	cd ./examples && \
+	docker exec -it mysql_slave1 mysql -u root -p111 mydb
+docker-mysql-login-slave2:
+	cd ./examples && \
+	docker exec -it mysql_slave2 mysql -u root -p111 mydb
+bench-with-docker:
+	cd ./examples && \
+	go test -bench=.
+bench-with-sqlmock:
+	go test -bench=.

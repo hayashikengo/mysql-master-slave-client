@@ -55,6 +55,8 @@ func NewDbBalancer(ctx context.Context, dbs []*sql.DB) *dbBalancer {
 }
 
 func (d *dbBalancer) healthCheck() {
+	// OPTIMIZE: allocate times
+	// Not critical
 	availableDbs := make([]*sql.DB, 0)
 	for i := range d.dbs {
 		db := d.dbs[i]
