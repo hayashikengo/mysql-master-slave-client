@@ -21,7 +21,7 @@ $ go get ...
 ### Usage
 
 ```go
-master, err := sql.Open("mysql", "mydb_user:mydb_pwd@tcp(127.0.0.1:4406)/mydb?charset=utf8")
+	master, err := sql.Open("mysql", "mydb_user:mydb_pwd@tcp(127.0.0.1:4406)/mydb?charset=utf8")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -40,13 +40,9 @@ master, err := sql.Open("mysql", "mydb_user:mydb_pwd@tcp(127.0.0.1:4406)/mydb?ch
 	// close db connections
 	defer db.Close()
 
-	// setting
+	// configuration
 	db.SetFallbackType(mydb.UseMaster)
 	db.SetBalanceAlgorithm(mydb.Random)
-	db.SetHealthCheckIntervalMilli(1000)
-	db.SetConnMaxLifetime(10)
-	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(10)
 
 	// exec by master
 	result, err := db.Exec("insert into code values (100), (200)")
@@ -70,7 +66,36 @@ master, err := sql.Open("mysql", "mydb_user:mydb_pwd@tcp(127.0.0.1:4406)/mydb?ch
 	}
 ```
 
-### SetFallbackType()
+### Configuration
+
+#### Readreplica Balancing Algorithm configuration
+```go
+db.SetBalanceAlgorithm(mydb.Random) // default Random
+```
+- Random
+- RoundRobin
+
+#### Fallback type configuration
+```go
+db.SetFallbackType(mydb.UseMaster) // default UseMaster
+```
+- None
+  - Return `ErrAllReadreplicaDied` if all readreplica died.
+- UseMaster
+  - Use Master if all readreplica died.
+  - Return `ErrMasterDied` if all readreplica and master died.
+
+#### Health check interval configuration
+```go
+db.SetHealthCheckIntervalMilli(1000) // default 5000
+```
+
+#### db connection configuration
+```go
+	db.SetConnMaxLifetime(10)
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(10)
+```
 
 - `None`
   - return `ErrAllReadreplicaDied` if all readreplica died
@@ -78,11 +103,6 @@ master, err := sql.Open("mysql", "mydb_user:mydb_pwd@tcp(127.0.0.1:4406)/mydb?ch
   - use Master if all readreplica died
   - return `ErrMasterDied` if all readreplica and master died
 
-### SetBalnaceAlgorithm()
-Select readreplica setting.
-
-- `Random`
-- `Roundrobin`
 
 ## Benchmark
 ```
@@ -113,6 +133,7 @@ $ make build
 ```
 
 ### Run master slave db
+Run master db and 3 readreplica dbs.
 
 ```bash
 # initialize db setting on the first time
@@ -122,6 +143,7 @@ $ make docker-master-slave-db-initialize
 $ make docker-master-slave-db-run
 ```
 ### Benchmark
+mydb vs database/sql
 ```bash
 # run with sqlmock
 $ make bench-with-sqlmock
