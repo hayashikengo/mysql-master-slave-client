@@ -618,7 +618,7 @@ func TestHealthCheckIntervalMilli(t *testing.T) {
 	})
 }
 
-func TestBalaceAlgorithm(t *testing.T) {
+func TestBalanceAlgorithm(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		master, _, err := sqlmock.New()
 		if err != nil {
@@ -627,13 +627,13 @@ func TestBalaceAlgorithm(t *testing.T) {
 		db := New(master)
 		defer db.Close()
 
-		if db.GetBalaceAlgorithm() != Random {
-			t.Error("GetBalaceAlgorithm() want Random")
+		if db.GetBalanceAlgorithm() != Random {
+			t.Error("GetBalanceAlgorithm() want Random")
 		}
 
-		db.SetBalaceAlgorithm(RoundRobin)
-		if db.GetBalaceAlgorithm() != RoundRobin {
-			t.Error("GetBalaceAlgorithm() want RoundRobin")
+		db.SetBalanceAlgorithm(RoundRobin)
+		if db.GetBalanceAlgorithm() != RoundRobin {
+			t.Error("GetBalanceAlgorithm() want RoundRobin")
 		}
 	})
 }

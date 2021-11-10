@@ -15,7 +15,7 @@ const (
 
 const (
 	DefaultHealthCheckIntervalMilli = 5000
-	DefaultBalaceAlgorithm          = Random
+	DefaultBalanceAlgorithm         = Random
 	DefaultFallbackType             = UseMaster
 )
 
@@ -243,12 +243,12 @@ func (db *DB) SetHealthCheckIntervalMilli(i int) {
 	db.readDbBalancer.SetHealthCheckIntervalMilli(i)
 }
 
-func (db *DB) GetBalaceAlgorithm() BalaceAlgorithm {
-	return db.readDbBalancer.GetBalaceAlgorithm()
+func (db *DB) GetBalanceAlgorithm() BalanceAlgorithm {
+	return db.readDbBalancer.GetBalanceAlgorithm()
 }
 
-func (db *DB) SetBalaceAlgorithm(balaceAlgorithm BalaceAlgorithm) {
-	db.readDbBalancer.SetBalaceAlgorithm(balaceAlgorithm)
+func (db *DB) SetBalanceAlgorithm(balanceAlgorithm BalanceAlgorithm) {
+	db.readDbBalancer.SetBalanceAlgorithm(balanceAlgorithm)
 }
 
 func (db *DB) GetFallbackType() FallbackType {

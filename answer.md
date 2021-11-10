@@ -28,7 +28,7 @@
   - [x] optionalにしたい
   - [ ] 遅延の少ないDBを選択するアルゴリズム追加
 - ライブラリを使った場合のオーバーヘッドを知りたい
-  - [ ] `mydb vs database/sql` のbenchmark追加
+  - [x] `mydb vs database/sql` のbenchmark追加
 - ci欲しい
   - [x] `go build` 回す
   - [x] `go test` 回す

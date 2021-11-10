@@ -69,7 +69,7 @@ func BenchmarkMydbSelectWithRandom(b *testing.B) {
 	}
 
 	db := New(master, readreplica0, readreplica1, readreplica2, readreplica3)
-	db.SetBalaceAlgorithm(Random)
+	db.SetBalanceAlgorithm(Random)
 	defer db.Close()
 
 	b.ResetTimer()
@@ -123,7 +123,7 @@ func BenchmarkMydbSelectWithRoundRobin(b *testing.B) {
 	}
 
 	db := New(master, readreplica0, readreplica1, readreplica2, readreplica3)
-	db.SetBalaceAlgorithm(RoundRobin)
+	db.SetBalanceAlgorithm(RoundRobin)
 	defer db.Close()
 
 	b.ResetTimer()
@@ -181,7 +181,7 @@ func BenchmarkMydbExec(b *testing.B) {
 	}
 
 	db := New(master, readreplica)
-	db.SetBalaceAlgorithm(Random)
+	db.SetBalanceAlgorithm(Random)
 	defer db.Close()
 
 	b.ResetTimer()

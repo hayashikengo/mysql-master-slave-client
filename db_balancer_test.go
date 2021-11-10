@@ -38,7 +38,7 @@ func TestGet(t *testing.T) {
 		d = append(d, db1)
 		dbBalancer := NewDbBalancer(context.Background(), d)
 		defer dbBalancer.Destroy()
-		dbBalancer.SetBalaceAlgorithm(RoundRobin)
+		dbBalancer.SetBalanceAlgorithm(RoundRobin)
 
 		if dbBalancer.IsAlive() == false {
 			t.Errorf("dbBalancer IsAlive() want %t, but get %t", true, dbBalancer.IsAlive())
@@ -67,7 +67,7 @@ func TestGet(t *testing.T) {
 		d = append(d, db1)
 		dbBalancer := NewDbBalancer(context.Background(), d)
 		defer dbBalancer.Destroy()
-		dbBalancer.SetBalaceAlgorithm(Random)
+		dbBalancer.SetBalanceAlgorithm(Random)
 
 		if dbBalancer.IsAlive() == false {
 			t.Errorf("dbBalancer IsAlive() want %t, but get %t", true, dbBalancer.IsAlive())
@@ -99,18 +99,18 @@ func TestSetHealthCheckIntervalMilli(t *testing.T) {
 	})
 }
 
-func TestSetBalaceAlgorithm(t *testing.T) {
+func TestSetBalanceAlgorithm(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		dbBalancer := NewDbBalancer(context.Background(), nil)
 		defer dbBalancer.Destroy()
 
-		if dbBalancer.GetBalaceAlgorithm() != Random {
-			t.Error("GetBalaceAlgorithm() want Random")
+		if dbBalancer.GetBalanceAlgorithm() != Random {
+			t.Error("GetBalanceAlgorithm() want Random")
 		}
 
-		dbBalancer.SetBalaceAlgorithm(RoundRobin)
-		if dbBalancer.GetBalaceAlgorithm() != RoundRobin {
-			t.Error("GetBalaceAlgorithm() want RoundRobin")
+		dbBalancer.SetBalanceAlgorithm(RoundRobin)
+		if dbBalancer.GetBalanceAlgorithm() != RoundRobin {
+			t.Error("GetBalanceAlgorithm() want RoundRobin")
 		}
 	})
 }
